@@ -12,11 +12,14 @@ class Rettangolo:
         self.altezza = altezza
         self.area = base * altezza
 
+    def visualizza(self):
+        print(f"Base: {self.base}, Altezza: {self.altezza}, Area: {self.area}")
+
 def get_lato ():
     return r.randint(1, 10)
 
 r1 = Rettangolo(get_lato(), get_lato())
 r2 = Rettangolo(get_lato(), get_lato())
 
-print(f"Rettangolo 1: base = {r1.base}, altezza = {r1.altezza}, area = {r1.area}")
-print(f"Rettangolo 2: base = {r2.base}, altezza = {r2.altezza}, area = {r2.area}")
+r1.visualizza()
+r2.visualizza()
