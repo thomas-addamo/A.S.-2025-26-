@@ -2,6 +2,7 @@
 ESERCIZIO 1
 """
 import random as r
+import math
 
 class Rettangolo:
     def __init__(self, base, altezza):
@@ -34,8 +35,8 @@ def get_lato ():
 class Cerchio:
     def __init__(self, raggio):
         self.raggio = raggio
-        self.area = 3.14 * raggio * raggio
-        self.circonferenza = 2 * 3.14 * self.raggio
+        self.area = math.pi * raggio * raggio
+        self.circonferenza = 2 * math.pi * self.raggio
 
     def visualizza(self):
         print(f"Raggio: {self.raggio}, Area: {self.area}, Circonferenza: {self.circonferenza}")
