@@ -1,7 +1,7 @@
 """
 ESERCIZIO 1
 """
-import random as r
+import random as d
 import math
 
 class Rettangolo:
@@ -30,7 +30,7 @@ class Rettangolo:
             print("Non è un quadrato")
 
 def get_lato ():
-    return r.randint(1, 10)
+    return d.randint(1, 10)
 
 class Cerchio:
     def __init__(self, raggio):
@@ -42,7 +42,7 @@ class Cerchio:
         print(f"Raggio: {self.raggio}, Area: {self.area}, Circonferenza: {self.circonferenza}")
 
 def get_raggio ():
-    return r.randint(1, 50)
+    return d.randint(1, 50)
 
 r1 = Rettangolo(get_lato(), get_lato())
 r2 = Rettangolo(get_lato(), get_lato())
