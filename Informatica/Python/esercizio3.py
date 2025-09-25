@@ -33,3 +33,33 @@ print(f"Distanza dall'origine del punto 2: {distanza_origine2}")
 distanza_tra_punti = punto1.calcola_distanza_altro_punto(punto2)
 print(f"Distanza tra punto1 e punto2: {distanza_tra_punti}")
 
+#<------------------------------------------------------------->
+
+class Rettangolo:
+    def __init__(self, p1: 'Punto', p2: 'Punto'):
+        self.p1 = p1  #angolo in basso a sinistra
+        self.p2 = p2  #angolo in alto a destra
+
+    def base(self):
+        return abs(self.p2.x - self.p1.x)  #lunghezza della base
+
+    def altezza(self):
+        return abs(self.p2.y - self.p1.y)  #altezza
+
+    def area(self):
+        return self.base() * self.altezza()  #calcola l'area
+
+    def contiene(self, p: 'Punto'):
+        if (self.p1.x <= p.x <= self.p2.x) and (self.p1.y <= p.y <= self.p2.y):
+            return True
+        else:
+            return False
+
+rettangolo = Rettangolo(Punto(1, 1), Punto(5, 4))
+print(f"Base del rettangolo: {rettangolo.base()}")
+print(f"Altezza del rettangolo: {rettangolo.altezza()}")
+print(f"Area del rettangolo: {rettangolo.area()}")
+punto_interno = Punto(3, 2)
+punto_esterno = Punto(6, 5)
+print(f"Il punto (3, 2) è interno al rettangolo? {rettangolo.contiene(punto_interno)}")
+print(f"Il punto (6, 5) è interno al rettangolo? {rettangolo.contiene(punto_esterno)}") 
