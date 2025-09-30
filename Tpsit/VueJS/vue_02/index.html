@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Lezioni di Vue.js</title>
+   <script src="https://unpkg.com/vue@3" defer></script>
+   <script src="./app.js" defer></script>
+   <style>
+      body { font-family: sans-serif; padding: 20px; }
+      .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+      .text-danger { color: red; }
+      .active { background-color: #d4edda; }
+   </style>
+</head>
+<body>
+
+   <div id="app">
+
+   <h2>Logo di Vue.js</h2>
+   <img :src="urlImmagine" alt="Logo Vue" width="100">
+
+   <h2>Visita il sito ufficiale</h2>
+   <a :href="urlSitoUfficiale" title="Sito Ufficiale Vue.js">
+      Clicca qui per saperne di più
+   </a>
+
+   <div :class="classeCss">
+      Questo div ha una classe applicata dinamicamente.
+   </div>
+</div>
+   
+</body>
+</html>
