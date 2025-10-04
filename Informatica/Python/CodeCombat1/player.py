@@ -34,3 +34,29 @@ class Player:
 
     def is_alive(self) -> bool:
         return self.health > 0
+    
+    def take_damage(self, damage: int) -> int:
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+        return self.health
+
+    def attack(self, enemy: "Player") -> int:
+        if self.weapon is None:
+            base_damage = 1
+            mod = 0
+        else:
+            base_damage = self.weapon.get_damage()
+            if self.weapon.type == "melee":
+                mod = self.modifier(self.strength)
+            else:
+                mod = self.modifier(self.dexterity)
+        total_damage = max(0, base_damage + mod)
+        enemy.take_damage(total_damage)
+        return total_damage
+    
+    def __str__(self) -> str:
+        weapon_str = str(self.weapon) if self.weapon else "No Weapon"
+        return (f"Player(Name: {self.name}, Health: {self.health}/{self.max_health}, "
+                f"Strength: {self.strength}, Dexterity: {self.dexterity}, "
+                f"Weapon: {weapon_str})")
