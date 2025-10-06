@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <h2>Login utente</h2>
+        <p>Nome: <b>{{ nome }}</b></p>
+        <p>Cognome: <b>{{ cognome }}</b></p>
+        <h3 v-if = "isLoggedIn" style = "color: green;">Benvenuto utente!</h3>
+        <h3 v-else style = "color: red;">Effettua il login</h3>
+
+        <div>
+            <h2>Semaforo</h2>
+            <div v-if = "coloreSemaforo == 'rosso'" style = "background-color: red; padding: 10px; width: 50px; color: white; border-radius: 5px">Fermo!</div>
+            <div v-else-if = "coloreSemaforo == 'giallo'" style = "background-color: yellow; padding: 10px; width: 80px; color: black; border-radius: 5px">Attenzione!</div>
+            <div v-else-if = "coloreSemaforo == 'verde'" style = "background-color: green; padding: 10px; width: 30px; color: white; border-radius: 5px;">Vai!</div>
+            <div v-else>Semaforo non valido!</div>
+        </div>
+
+        <div>
+            <h2>Squadre preferite</h2>
+            <ol>
+                <li v-for = "team in favouriteTeam">{{team}}</li>
+            </ol>
+        </div>
+
+        <div>
+            <h2>Prodotti</h2>
+            <table>
+                <tr style>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Prezzo</th>
+                </tr>
+                <tr v-for = "prodotto in prodotti">
+                    <td>{{prodotto.id}}</td>
+                    <td>{{prodotto.nome}}</td>
+                    <td>{{prodotto.prezzo}}€</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>

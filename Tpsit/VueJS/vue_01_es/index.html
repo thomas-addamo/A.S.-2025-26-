@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+       <h2>Profilo Utente</h2>
+       <p>Nome: {{ nome }}</p>
+       <p>Cognome: {{ cognome }}</p>
+       <p>Città: {{ citta }}</p>
+       <hr>
+       <h2>Dettagli Prodotto</h2>
+       <p>Il prodotto <b>{{ nomeProdotto }}</b> costa <b>{{ prezzoProdotto }} €</b>.</p>
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+
+</body>
+</html>

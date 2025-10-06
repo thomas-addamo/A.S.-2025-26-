@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+		<h2>Rendering Condizionale</h2>
+
+        <h3>Usando v-if</h3>
+        <p v-if="visibile">Questo paragrafo è visibile!</p>
+        <p v-else>Ora il paragrafo è nascosto.</p>
+
+        <h3>Usando v-show</h3>
+        <p v-show="visibile" class="box">Questo paragrafo usa v-show e rimane nel DOM.</p>
+
+        <h3>Esempio con v-else-if</h3>
+        <div v-if="punteggio > 8">Eccellente!</div>
+        <div v-else-if="punteggio >= 6">Sufficiente.</div>
+        <div v-else>Insufficiente.</div>
+        
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
