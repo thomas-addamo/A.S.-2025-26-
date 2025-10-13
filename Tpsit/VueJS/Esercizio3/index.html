@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --bg: #f6f8ff;
+            --card: #ffffff;
+            --border: #e6e8f0;
+            --text: #1f2937;
+            --primary: #3b82f6;
+            --primary-600: #2563eb;
+            --danger: #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--bg), #eef3ff);
+            line-height: 1.5;
+        }
+
+        h1, h2, h3 { margin: 0 0 10px; }
+
+        #app {
+            max-width: 760px;
+            margin: 0 auto;
+            display: grid;
+            gap: 16px;
+        }
+
+        button {
+            appearance: none;
+            border: 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+            transition: background .2s ease, transform .02s ease, box-shadow .2s ease;
+        }
+        button:hover { background: var(--primary-600); }
+        button:active { transform: translateY(1px); box-shadow: 0 2px 8px rgba(59,130,246,.28); }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            max-width: 320px;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59,130,246,.18);
+        }
+
+        input[type="radio"] { accent-color: var(--primary); margin-right: 6px; }
+        label, p { margin: 6px 0; }
+
+        .box {
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+            border-radius: 14px;
+            background-color: var(--card);
+            width: auto;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .text-danger {
+            color: var(--danger);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Esercizio 3</h1>
+
+    <div id="app">
+        <h2>{{messaggio}}</h2>
+        <button @click="messaggio = 'Hai cliccato il pulsante!'">Cambia Messaggio</button>
+        
+        <h2 v-if ="luceAccesa">La luce è accesa!</h2>
+        <h2 v-else>La luce è spenta!</h2>
+        <button @click="toggleLuce">Accendi/Spegni Luce</button>
+    
+        <div class="box">
+            <h2>Convertitore Kg - g</h2>
+            <input type="number" v-model.number="kg" placeholder="Inserisci kg">
+            <p v-if="kg === 0" class="text-danger">Inserisci un valore maggiore di zero.</p>
+            <p v-else-if="kg < 0">Il valore non può essere negativo.</p>
+            <p><b>{{kg}}</b> kg sono <b>{{kg * 1000}}</b> g</p>
+        </div>
+
+        <div class="box">
+            <h2>Registrazione utente</h2>
+            <p>Inserisci il nome:</p>
+            <input type="text" v-model="nome" placeholder="Nome">
+            <p>Inserisci il cognome:</p>
+            <input type="text" v-model="cognome" placeholder="Cognome">
+
+            <p>Genere:</p>
+            <input type="radio" value="M" v-model="genere"> Maschio
+            <input type="radio" value="F" v-model="genere"> Femmina
+            <input type="radio" value="A" v-model="genere"> Altro
+
+            <p>Paese:</p>
+            <input type="radio" value="IT" v-model="paese"> Italia
+            <input type="radio" value="FR" v-model="paese"> Francia
+            <input type="radio" value="DE" v-model="paese"> Germania
+            <input type="radio" value="ES" v-model="paese"> Spagna
+
+            <h3>Riepilogo:</h3>
+            <p>Nome: <b>{{nome}}</b></p>
+            <p>Cognome: <b>{{cognome}}</b></p>
+            <p>Genere: <b>{{genere}}</b></p>
+            <p>Paese: <b>{{paese}}</b></p>
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
