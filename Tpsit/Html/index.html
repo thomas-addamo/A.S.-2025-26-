@@ -3,207 +3,89 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Simulazione Scheduling: FCFS, SJF, RR, Priority</title>
+<title>Simulatore Scheduling — (FCFS, SJF, RR, Priority)</title>
 <style>
-	:root{
-		--bg: white;
-		--panel-bg: #0b1220;
-		--muted: #95a0b5;
-		--accent: #4a90e2;
-		--accent-2: #50e3c2;
-		--surface: #0f1724;
-		--card: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-		--glass: rgba(255,255,255,0.03);
-		--radius: 10px;
-		--shadow: 0 6px 18px rgba(2,6,23,0.6);
-		--success: #7ed321;
-		--danger: #e94e77;
-		font-size:16px;
-	}
-	*{box-sizing:border-box}
-	html,body{height:100%}
-	body{
-		margin:18px;
-		font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-		background: linear-gradient(180deg,#071127 0%, #071826 100%);
-		color:#e6eef8;
-		-webkit-font-smoothing:antialiased;
-		-moz-osx-font-smoothing:grayscale;
-	}
-	h2{margin:0 0 12px 0;font-weight:600;color:#eaf4ff}
-	.container{
-		display:flex;
-		flex-wrap:wrap;
-		gap:20px;
-		align-items:flex-start;
-	}
-	.panel{
-		background:var(--panel-bg);
-		padding:16px;
-		border-radius:var(--radius);
-		box-shadow:var(--shadow);
-		border:1px solid rgba(255,255,255,0.03);
-		flex:1 1 420px;
-		min-width:300px;
-	}
-	.panel h3{margin-top:0;color:#d8e9ff}
-	label{display:block;margin-top:12px;color:var(--muted);font-size:0.95rem}
-	textarea{
-		width:100%;
-		height:150px;
-		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
-		font-size:0.95rem;
-		background:var(--glass);
-		border:1px solid rgba(255,255,255,0.03);
-		color:#eaf4ff;
-		padding:10px;
-		border-radius:8px;
-		resize:vertical;
-	}
-	input[type="number"], select, input[type="text"]{
-		padding:8px 10px;
-		border-radius:8px;
-		background:transparent;
-		border:1px solid rgba(255,255,255,0.04);
-		color:#eaf4ff;
-		min-height:38px;
-	}
-	.small{font-size:0.85rem;color:var(--muted);margin-left:8px}
-	button{
-		background:linear-gradient(180deg,var(--accent),#2f78c6);
-		color:white;
-		border:none;
-		padding:8px 12px;
-		border-radius:8px;
-		cursor:pointer;
-		margin-left:6px;
-		transition:transform .12s ease, box-shadow .12s ease, opacity .12s;
-		box-shadow: 0 6px 14px rgba(46,118,198,0.12);
-	}
-	button:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(46,118,198,0.14)}
-	button[disabled]{opacity:0.6;cursor:not-allowed;transform:none}
-	.table{border-collapse:collapse;width:100%;margin-top:12px;background:transparent}
-	.table th,.table td{
-		border-bottom:1px solid rgba(255,255,255,0.04);
-		padding:10px 8px;
-		text-align:center;
-		font-size:0.95rem;
-		color:#dbeafc;
-	}
-	.table thead th{
-		position:sticky;top:0;background:linear-gradient(90deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-		backdrop-filter: blur(6px);
-		font-weight:600;
-		color:#f5fbff;
-	}
-	.table tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
-	.table tbody tr:hover{background:rgba(74,144,226,0.06)}
-	.gantt{
-		position:relative;
-		height:auto;
-		min-height:64px;
-		border-radius:10px;
-		padding:10px;
-		margin-top:12px;
-		background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
-		display:flex;align-items:center;gap:6px;overflow:auto;
-	}
-	.gantt .block{
-		height:40px;
-		margin:0 6px;
-		display:flex;align-items:center;justify-content:center;
-		color:#071022;font-weight:700;border-radius:8px;
-		padding:6px 10px;
-		box-shadow:0 6px 12px rgba(2,6,23,0.5);
-		white-space:nowrap;
-		font-size:0.9rem;
-	}
-	.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-	.legend .item{display:flex;align-items:center;gap:8px;font-size:0.9rem;color:var(--muted)}
-	.color-box{width:18px;height:18px;border-radius:4px;box-shadow:0 3px 6px rgba(2,6,23,0.5)}
-	.panel .options{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
-	.kv{display:flex;gap:6px;align-items:center}
-	/* responsive */
-	@media (max-width:900px){
-		.container{gap:12px}
-		.panel{flex-basis:100%}
-		textarea{height:120px}
-		.gantt{padding:8px}
-	}
-	@media (max-width:520px){
-		body{margin:10px;font-size:15px}
-		button{padding:8px 10px}
-		.gantt .block{font-size:0.8rem;padding:6px 8px}
-		.table th,.table td{padding:8px 6px;font-size:0.9rem}
-	}
-	/* subtle focus */
-	input:focus, textarea:focus, select:focus, button:focus{
-		outline: none;
-		box-shadow: 0 0 0 4px rgba(74,144,226,0.12);
-		border-color: rgba(74,144,226,0.9);
-	}
+	/* UI minimal e leggibile */
+	body{font-family:Inter,Arial,sans-serif;background:#f6f8fb;color:#102331;margin:20px}
+	.container{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr 520px;gap:18px}
+	.card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 6px 18px rgba(16,35,49,0.06)}
+	h1{font-size:1.15rem;margin:0 0 8px}
+	label{display:block;font-size:0.9rem;color:#415a6b;margin-top:8px}
+	textarea{width:100%;height:130px;font-family:monospace;padding:10px;border-radius:8px;border:1px solid #e3eef6;background:#fbfeff}
+	.row{display:flex;gap:8px;align-items:center;margin-top:10px}
+	select,input[type=number]{padding:8px;border-radius:8px;border:1px solid #dceff8;background:#fff}
+	button{padding:8px 12px;border-radius:8px;border:none;background:#0b6fc3;color:#fff;cursor:pointer}
+	button.secondary{background:#6fb3c9}
+	.small{font-size:0.85rem;color:#5b7b8b}
+	.table{width:100%;border-collapse:collapse;margin-top:12px}
+	.table th,.table td{border:1px solid #e9f4fb;padding:8px;text-align:center;font-size:0.9rem}
+	.gantt{display:block;margin-top:12px;padding:10px;border-radius:8px;background:#f7fbfe;border:1px solid #e6f3fb;overflow:auto}
+	.gantt .block{display:inline-flex;align-items:center;justify-content:center;height:36px;margin:2px;border-radius:6px;color:#052233;font-weight:700;padding:6px}
+	.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+	.legend .item{display:flex;align-items:center;gap:6px;font-size:0.9rem}
+	.color{width:18px;height:18px;border-radius:4px}
+	.footer-note{font-size:0.85rem;color:#577383;margin-top:10px}
+	@media (max-width:980px){.container{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<h2>Simulatore Scheduling (FCFS, SJF, RR, Priority)</h2>
 <div class="container">
-	<div class="panel" style="flex:1">
-		<label>Input JSON tasks (esempio):
-		<textarea id="jsonInput" aria-label="Input JSON dei task">[
+	<div class="card">
+		<h1>Simulazione Scheduling (input JSON scalabile)</h1>
+		<div class="small">Incolla un array JSON di task oppure genera N task con la "IA" (simulazione). Ogni task: {"id","arrival","burst","priority"}.</div>
+
+		<label>JSON input dei task:
+			<textarea id="jsonInput">[
   {"id":"P1","arrival":0,"burst":5,"priority":2},
   {"id":"P2","arrival":1,"burst":3,"priority":1},
   {"id":"P3","arrival":2,"burst":8,"priority":3}
 ]</textarea>
 		</label>
-		<!-- added clear helper / instructions -->
-		<div class="small" style="margin-top:8px">
-			Formato: array di oggetti con campi id (string), arrival (numero), burst (durata), priority (numero). 
-			Esempio già presente; puoi incollare il tuo JSON oppure usare "Genera" per creare N task casuali.
+
+		<div class="row">
+			<label class="small">Genera N task:
+				<input id="genCount" type="number" value="6" min="1" style="width:80px">
+			</label>
+			<button id="btnGen">Genera (IA)</button>
+			<button id="btnLoad" class="secondary">Carica esempio</button>
 		</div>
-		<label style="margin-top:10px">Genera tasks (simulazione IA):
-			<input id="genCount" aria-label="Numero di task da generare" type="number" value="6" min="1" style="width:80px"> count
-			<button id="btnGen" title="Genera un set casuale di task">Genera</button>
-			<span class="small">Arrival 0..10, burst 1..10, priority 1..5</span>
-		</label>
 
 		<label>Algoritmo:
 			<select id="algo">
+				<option value="compare">Confronta tutti</option>
 				<option value="fcfs">FCFS</option>
 				<option value="sjf">SJF (non-preemptive)</option>
-				<option value="rr">Round Robin (preemptive)</option>
-				<option value="priority">Priority (non-preemptive)</option>
+				<option value="rr">Round Robin</option>
+				<option value="priority">Priority</option>
 			</select>
 		</label>
 
-		<label id="quantumLabel" style="display:none">Quantum (per RR):
+		<label id="quantumLabel" style="display:none">Quantum (RR):
 			<input id="quantum" type="number" value="2" min="1" style="width:80px">
 		</label>
 
-		<label>Opzioni:
-			<input type="checkbox" id="showSteps"> Mostra step-by-step (console)
-		</label>
+		<div class="row">
+			<label class="small"><input type="checkbox" id="showSteps"> Mostra schedule (console)</label>
+			<button id="btnRun">Esegui</button>
+			<button id="btnClear" class="secondary">Pulisci</button>
+		</div>
 
-		<button id="btnRun">Esegui simulazione</button>
-		<button id="btnClear">Pulisci output</button>
-
+		<div class="footer-note">Suggerimento IA: il pulsante "Genera (IA)" crea un set plausibile di task; poi puoi confrontare gli algoritmi per vedere quale minimizza l'Average Waiting.</div>
 	</div>
 
-	<div class="panel" style="flex:1">
-		<h3>Risultati</h3>
-		<div id="metrics"></div>
-		<div id="tableWrap"></div>
-		<div id="ganttWrap"></div>
-		<div id="legend" class="legend"></div>
+	<div class="card">
+		<h1>Risultati</h1>
+		<div id="summary" class="small">Nessuna simulazione eseguita.</div>
+		<div id="results"></div>
 	</div>
 </div>
 
 <script>
-// Utils
-function parseTasksFromJSON(txt){
+/* Utils e parsing */
+function parseTasks(txt){
 	try{
 		const arr = JSON.parse(txt);
-		if(!Array.isArray(arr)) throw new Error('JSON deve essere un array di task');
-		// normalize and validate; assicurati di avere numeri coerenti
+		if(!Array.isArray(arr)) throw new Error('L\'input deve essere un array di task');
 		return arr.map((t,i)=>({
 			id: String(t.id ?? ('T'+(i+1))),
 			arrival: Number(t.arrival ?? 0),
@@ -211,157 +93,119 @@ function parseTasksFromJSON(txt){
 			priority: Number(t.priority ?? 0)
 		})).sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
 	}catch(e){
-		alert('Errore parsing JSON: '+e.message);
+		alert('Errore JSON: '+e.message);
 		return null;
 	}
 }
 
+/* Generatore "IA" semplice: distribuzione casuale ma leggibile */
 function generateTasks(n){
-	const arr=[];
+	const out=[];
 	for(let i=0;i<n;i++){
 		const id='P'+(i+1);
-		const arrival=Math.floor(Math.random()*11); // 0..10
-		const burst=1+Math.floor(Math.random()*10); //1..10
-		const priority=1+Math.floor(Math.random()*5); //1..5
-		arr.push({id,arrival,burst,priority});
+		const arrival=Math.floor(Math.random()*8); // 0..7
+		const burst=1+Math.floor(Math.random()*10); // 1..10
+		const priority=1+Math.floor(Math.random()*5);
+		out.push({id,arrival,burst,priority});
 	}
-	// small sort for nicer initial ordering
-	arr.sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
-	return arr;
+	out.sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
+	return out;
 }
 
-// Scheduler helpers and algorithms
-function computeMetrics(schedule, originalTasks){
-	// schedule: array di segmenti {id, start, end}
-	// originalTasks: array di task originali con arrival, burst, priority
-	// Restituisce righe ordinate per id e medie formattate
-	const tasks = {};
-	originalTasks.forEach(t=>tasks[t.id]=Object.assign({},t));
-	// completion = ultima fine nel schedule per quell'id
+/* Metriche comuni */
+function computeMetrics(schedule, tasks){
+	const map={};
+	tasks.forEach(t=>map[t.id]=Object.assign({},t));
 	for(const seg of schedule){
-		if(!tasks[seg.id]) continue;
-		tasks[seg.id].completion = Math.max(tasks[seg.id].completion ?? 0, seg.end);
+		if(!map[seg.id]) continue;
+		map[seg.id].completion = Math.max(map[seg.id].completion ?? 0, seg.end);
 	}
-	const rows = [];
-	let totalWaiting=0, totalTurnaround=0;
-	let makespan = schedule.length ? Math.max(...schedule.map(s=>s.end)) : 0;
-	let totalCpu = 0;
-	for(const id of Object.keys(tasks).sort()){
-		const t = tasks[id];
-		t.completion = t.completion ?? t.arrival; // se mai eseguito
+	const rows=[];
+	let totalW=0,totalT=0,totalCPU=0;
+	for(const id of Object.keys(map).sort()){
+		const t=map[id];
+		t.completion = t.completion ?? t.arrival;
 		t.turnaround = t.completion - t.arrival;
 		t.waiting = t.turnaround - t.burst;
-		totalWaiting += t.waiting;
-		totalTurnaround += t.turnaround;
-		totalCpu += t.burst;
-		rows.push({
-			id: t.id,
-			arrival: t.arrival,
-			burst: t.burst,
-			priority: t.priority,
-			completion: t.completion,
-			turnaround: t.turnaround,
-			waiting: t.waiting
-		});
+		totalW += t.waiting;
+		totalT += t.turnaround;
+		totalCPU += t.burst;
+		rows.push(t);
 	}
 	const n = rows.length || 1;
 	return {
 		rows,
-		avgWaiting: totalWaiting / n,
-		avgTurnaround: totalTurnaround / n,
-		makespan,
-		totalCpu,
-		count: rows.length
+		avgWaiting: totalW/n,
+		avgTurnaround: totalT/n,
+		makespan: schedule.length ? Math.max(...schedule.map(s=>s.end)) : 0,
+		totalCPU
 	};
 }
 
+/* Rendering: tabella e gantt */
 function renderTable(rows, container){
-	const wrap=document.getElementById(container);
-	if(!rows || rows.length===0){ wrap.innerHTML=''; return;}
+	const el=document.getElementById(container);
+	if(!rows || rows.length===0){ el.innerHTML=''; return; }
 	let html='<table class="table"><thead><tr><th>ID</th><th>Arrival</th><th>Burst</th><th>Priority</th><th>Completion</th><th>Turnaround</th><th>Waiting</th></tr></thead><tbody>';
 	for(const r of rows){
 		html+=`<tr><td>${r.id}</td><td>${r.arrival}</td><td>${r.burst}</td><td>${r.priority}</td><td>${r.completion}</td><td>${r.turnaround}</td><td>${r.waiting}</td></tr>`;
 	}
 	html+='</tbody></table>';
-	wrap.innerHTML=html;
+	el.innerHTML = html;
 }
 
-function renderMetrics(m, container){
+function renderGantt(schedule, container, tasks){
 	const el=document.getElementById(container);
-	// mostra tutti i valori in modo leggibile
-	el.innerHTML =
-	`<div class="small">
-		<b>Tasks:</b> ${m.count} &nbsp;|&nbsp;
-		<b>Total CPU:</b> ${m.totalCpu} &nbsp;|&nbsp;
-		<b>Makespan:</b> ${m.makespan} &nbsp;|&nbsp;
-		<b>Avg Waiting:</b> ${m.avgWaiting.toFixed(2)} &nbsp;|&nbsp;
-		<b>Avg Turnaround:</b> ${m.avgTurnaround.toFixed(2)}
-	</div>`;
-}
-
-function renderGantt(schedule, container, originalTasks){
-	const wrap=document.getElementById(container);
-	wrap.innerHTML='';
-	if(schedule.length===0){ wrap.textContent='Nessuna esecuzione'; return; }
-	// determine timeline length and scale
-	const maxTime = Math.max(...schedule.map(s=>s.end));
-	const unitPx = Math.max(14, Math.floor(600 / Math.max(1, maxTime))); // scala dinamica
-	// create color map per task
+	el.innerHTML = '';
+	if(!schedule.length){ el.innerHTML='<div class="small">Nessuna esecuzione</div>'; return; }
+	const maxT = Math.max(...schedule.map(s=>s.end));
+	const unit = Math.max(12, Math.floor(500 / Math.max(1, maxT)));
+	const palette=['#4a90e2','#e94e77','#f5a623','#7ed321','#bd10e0','#50e3c2','#f8e71c','#8b572a'];
 	const colors = {};
-	const palette=['#4a90e2','#e94e77','#f5a623','#7ed321','#bd10e0','#50e3c2','#f8e71c','#8b572a','#6a5acd','#ff7f50'];
-	originalTasks.forEach((t,i)=>colors[t.id]=palette[i%palette.length]);
-	// gantt container
-	const gantt=document.createElement('div');
+	tasks.forEach((t,i)=>colors[t.id]=palette[i%palette.length]);
+	const gantt = document.createElement('div');
 	gantt.className='gantt';
-	gantt.style.minHeight = '56px';
-	// add spacer for initial offset and blocks (preserve order of schedule)
+	// create a left spacer based on start times by adding empty gaps as needed
+	// simple approach: append blocks in schedule order; width proportional to duration
 	for(const seg of schedule){
-		const block=document.createElement('div');
-		block.className='block';
-		block.style.background = colors[seg.id] || '#333';
-		const width = Math.max(20, Math.round((seg.end - seg.start) * unitPx));
-		block.style.minWidth = width+'px';
-		block.title = `${seg.id}: ${seg.start} → ${seg.end}`; // tooltip
-		block.textContent = `${seg.id} (${seg.start}-${seg.end})`;
-		gantt.appendChild(block);
+		const b = document.createElement('div');
+		b.className='block';
+		b.style.background = colors[seg.id] || '#999';
+		b.style.minWidth = Math.max(20, (seg.end - seg.start)*unit)+'px';
+		b.title = `${seg.id} ${seg.start}→${seg.end}`;
+		b.textContent = `${seg.id} (${seg.start}-${seg.end})`;
+		gantt.appendChild(b);
 	}
-	// time ruler (ticks)
-	const ruler = document.createElement('div');
-	ruler.style.display='flex';
-	ruler.style.alignItems='center';
-	ruler.style.gap='0';
-	ruler.style.marginTop='8px';
-	for(let t=0;t<=maxTime;t++){
-		const tick = document.createElement('div');
-		tick.style.minWidth = unitPx + 'px';
-		tick.style.textAlign='center';
-		tick.style.fontSize='0.82rem';
-		tick.style.color='var(--muted)';
-		tick.textContent = t;
-		ruler.appendChild(tick);
+	// time ticks
+	const ticks = document.createElement('div');
+	ticks.style.display='flex';ticks.style.marginTop='8px';
+	for(let t=0;t<=maxT;t++){
+		const tk = document.createElement('div');
+		tk.style.minWidth = unit+'px'; tk.style.textAlign='center'; tk.style.color='#5b7b8b'; tk.textContent = t;
+		ticks.appendChild(tk);
 	}
-	wrap.appendChild(gantt);
-	wrap.appendChild(ruler);
+	el.appendChild(gantt);
+	el.appendChild(ticks);
+
 	// legend
-	const legend=document.getElementById('legend');
-	legend.innerHTML='';
-	for(const t of originalTasks){
-		const it=document.createElement('div');
-		it.className='item';
-		it.innerHTML=`<span class="color-box" style="background:${colors[t.id]};"></span><span>${t.id} (burst ${t.burst})</span>`;
+	const legend = document.createElement('div');
+	legend.className='legend';
+	tasks.forEach(t=>{
+		const it=document.createElement('div'); it.className='item';
+		const color=document.createElement('span'); color.className='color'; color.style.background=colors[t.id];
+		it.appendChild(color); it.appendChild(document.createTextNode(`${t.id} (burst ${t.burst})`));
 		legend.appendChild(it);
-	}
+	});
+	el.appendChild(legend);
 }
 
-// Algorithm implementations
+/* Algoritmi scheduler */
 function fcfs(tasks){
-	// sort by arrival then id
 	const q = tasks.slice().sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
-	const schedule=[];
-	let time = 0;
+	const schedule=[]; let time=0;
 	for(const t of q){
 		time = Math.max(time, t.arrival);
-		schedule.push({id:t.id, start:time, end: time + t.burst});
+		schedule.push({id:t.id, start:time, end:time + t.burst});
 		time += t.burst;
 	}
 	return schedule;
@@ -369,23 +213,13 @@ function fcfs(tasks){
 
 function sjfNonPreemptive(tasks){
 	const arr = tasks.map(t=>Object.assign({},t)).sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
-	const schedule=[];
-	let time=0;
-	const ready=[];
-	let i=0;
+	const schedule=[]; let time=0; const ready=[]; let i=0;
 	while(i<arr.length || ready.length){
-		while(i<arr.length && arr[i].arrival<=time){
-			ready.push(arr[i++]);
-		}
-		if(ready.length===0){
-			// jump to next arrival
-			time = arr[i].arrival;
-			continue;
-		}
-		// pick shortest burst (tie: arrival then id)
+		while(i<arr.length && arr[i].arrival<=time) ready.push(arr[i++]);
+		if(!ready.length){ time = arr[i].arrival; continue; }
 		ready.sort((a,b)=>a.burst - b.burst || a.arrival - b.arrival || a.id.localeCompare(b.id));
 		const t = ready.shift();
-		schedule.push({id:t.id, start:time, end: time + t.burst});
+		schedule.push({id:t.id, start:time, end:time + t.burst});
 		time += t.burst;
 	}
 	return schedule;
@@ -396,84 +230,107 @@ function priorityNonPreemptive(tasks){
 	const schedule=[]; let time=0; const ready=[]; let i=0;
 	while(i<arr.length || ready.length){
 		while(i<arr.length && arr[i].arrival<=time) ready.push(arr[i++]);
-		if(ready.length===0){ time = arr[i].arrival; continue; }
+		if(!ready.length){ time = arr[i].arrival; continue; }
 		ready.sort((a,b)=>a.priority - b.priority || a.arrival - b.arrival || a.id.localeCompare(b.id));
 		const t = ready.shift();
-		schedule.push({id:t.id, start:time, end: time + t.burst});
+		schedule.push({id:t.id, start:time, end:time + t.burst});
 		time += t.burst;
 	}
 	return schedule;
 }
 
 function roundRobin(tasks, quantum){
-	const arr = tasks.map(t=>Object.assign({},t));
-	arr.sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
-	const schedule=[];
-	let time=0;
-	const q=[];
-	let i=0;
+	const arr = tasks.map(t=>Object.assign({},t)).sort((a,b)=>a.arrival - b.arrival || a.id.localeCompare(b.id));
+	const schedule=[]; let time=0; const q=[]; let i=0;
 	while(i<arr.length || q.length){
-		while(i<arr.length && arr[i].arrival<=time){
-			q.push(Object.assign({},arr[i]));
-			i++;
-		}
-		if(q.length===0){
-			time = arr[i].arrival;
-			continue;
-		}
+		while(i<arr.length && arr[i].arrival<=time) q.push(Object.assign({},arr[i++]));
+		if(!q.length){ time = arr[i].arrival; continue; }
 		const cur = q.shift();
 		const run = Math.min(quantum, cur.burst);
-		schedule.push({id:cur.id, start:time, end: time+run});
-		time += run;
-		cur.burst -= run;
-		// enqueue newly arrived during execution
-		while(i<arr.length && arr[i].arrival<=time){
-			q.push(Object.assign({},arr[i]));
-			i++;
-		}
+		schedule.push({id:cur.id, start:time, end: time + run});
+		time += run; cur.burst -= run;
+		while(i<arr.length && arr[i].arrival<=time) q.push(Object.assign({},arr[i++]));
 		if(cur.burst>0) q.push(cur);
 	}
 	return schedule;
 }
 
-// UI wiring
+/* UI wiring e logica "IA" di suggerimento */
 document.getElementById('btnGen').addEventListener('click', ()=>{
 	const n = Math.max(1, Number(document.getElementById('genCount').value)||1);
 	const tasks = generateTasks(n);
 	document.getElementById('jsonInput').value = JSON.stringify(tasks, null, 2);
 });
 
+document.getElementById('btnLoad').addEventListener('click', ()=>{
+	document.getElementById('jsonInput').value = JSON.stringify([
+		{"id":"P1","arrival":0,"burst":5,"priority":2},
+		{"id":"P2","arrival":1,"burst":3,"priority":1},
+		{"id":"P3","arrival":2,"burst":8,"priority":3}
+	], null, 2);
+});
+
 const algoSelect = document.getElementById('algo');
-algoSelect.addEventListener('change', ()=>{
-	document.getElementById('quantumLabel').style.display = (algoSelect.value==='rr') ? 'block':'none';
+algoSelect.addEventListener('change', ()=> {
+	document.getElementById('quantumLabel').style.display = algoSelect.value === 'rr' ? 'block' : 'none';
 });
 
 document.getElementById('btnRun').addEventListener('click', ()=>{
 	const txt = document.getElementById('jsonInput').value;
-	const tasks = parseTasksFromJSON(txt);
+	const tasks = parseTasks(txt);
 	if(!tasks) return;
-	const algo = document.getElementById('algo').value;
+	const choice = document.getElementById('algo').value;
+	const q = Math.max(1, Number(document.getElementById('quantum').value)||2);
 	const showSteps = document.getElementById('showSteps').checked;
-	let schedule = [];
-	if(algo==='fcfs') schedule = fcfs(tasks);
-	else if(algo==='sjf') schedule = sjfNonPreemptive(tasks);
-	else if(algo==='priority') schedule = priorityNonPreemptive(tasks);
-	else if(algo==='rr'){
-		const q = Math.max(1, Number(document.getElementById('quantum').value)||1);
-		schedule = roundRobin(tasks, q);
+	const resultsDiv = document.getElementById('results');
+	resultsDiv.innerHTML = '';
+
+	// helper per eseguire un algoritmo e mostrare
+	function runAndShow(name, sched){
+		const metrics = computeMetrics(sched, tasks);
+		const container = document.createElement('div');
+		container.style.marginTop='10px';
+		container.innerHTML = `<div style="font-weight:700">${name}</div>`;
+		const tableId = 'tbl_'+Math.random().toString(36).slice(2,8);
+		container.innerHTML += `<div id="${tableId}"></div>`;
+		resultsDiv.appendChild(container);
+		renderTable(metrics.rows, tableId);
+		const ganttId = 'gantt_'+Math.random().toString(36).slice(2,8);
+		const gDiv = document.createElement('div'); gDiv.id = ganttId; resultsDiv.appendChild(gDiv);
+		renderGantt(sched, ganttId, tasks);
+		return metrics;
 	}
-	if(showSteps) console.log('schedule',schedule);
-	const metrics = computeMetrics(schedule, tasks);
-	renderMetrics(metrics, 'metrics');
-	renderTable(metrics.rows, 'tableWrap');
-	renderGantt(schedule, 'ganttWrap', tasks);
+
+	// choose behavior
+	if(choice === 'compare'){
+		// run all and pick best by avgWaiting
+		const all = [];
+		const s1 = fcfs(tasks); all.push({name:'FCFS', sched:s1, metrics:computeMetrics(s1,tasks)});
+		const s2 = sjfNonPreemptive(tasks); all.push({name:'SJF', sched:s2, metrics:computeMetrics(s2,tasks)});
+		const s3 = priorityNonPreemptive(tasks); all.push({name:'Priority', sched:s3, metrics:computeMetrics(s3,tasks)});
+		const s4 = roundRobin(tasks, q); all.push({name:'RoundRobin(q='+q+')', sched:s4, metrics:computeMetrics(s4,tasks)});
+
+		// render summary and detailed
+		all.sort((a,b)=>a.metrics.avgWaiting - b.metrics.avgWaiting);
+		document.getElementById('summary').innerHTML = `<b>Raccomandazione IA:</b> ${all[0].name} (min avg waiting: ${all[0].metrics.avgWaiting.toFixed(2)})`;
+		for(const a of all) runAndShow(a.name, a.sched);
+	} else {
+		let sched=[];
+		if(choice==='fcfs') sched = fcfs(tasks);
+		else if(choice==='sjf') sched = sjfNonPreemptive(tasks);
+		else if(choice==='priority') sched = priorityNonPreemptive(tasks);
+		else if(choice==='rr') sched = roundRobin(tasks, q);
+		const m = computeMetrics(sched, tasks);
+		document.getElementById('summary').innerHTML = `<b>Algoritmo:</b> ${choice.toUpperCase()} &nbsp;|&nbsp; Tasks: ${m.rows.length} &nbsp;|&nbsp; AvgW: ${m.avgWaiting.toFixed(2)} &nbsp;|&nbsp; Makespan: ${m.makespan}`;
+		runAndShow(choice.toUpperCase(), sched);
+		if(showSteps) console.log('schedule',sched);
+	}
 });
 
 document.getElementById('btnClear').addEventListener('click', ()=>{
-	document.getElementById('metrics').innerHTML='';
-	document.getElementById('tableWrap').innerHTML='';
-	document.getElementById('ganttWrap').innerHTML='';
-	document.getElementById('legend').innerHTML='';
+	document.getElementById('jsonInput').value = '';
+	document.getElementById('results').innerHTML = '';
+	document.getElementById('summary').innerHTML = 'Pulito';
 });
 </script>
 </body>
