@@ -2,52 +2,46 @@ from player import Player
 from weapon import Weapon
 import random as r
 
-"""
-- Dentro il blocco `if __name__ == "__main__"`: esegui:
-    1. Crea due personaggi con valori casuali di forza e destrezza (usa `randint`)
-    2. Assegna a ciascun personaggio un’arma coerente: se la forza > destrezza → arma da mischia, altrimenti arma a distanza
-    3. Equipaggia le armi
-    4. Simula turni alternati di attacco:
-        - stampa l’esito di ogni turno (danni inflitti, hp rimanenti)
-        - ferma il ciclo quando uno (o entrambi) muoiono
-    5. Stampa il vincitore, oppure “pareggio” se muoiono nello stesso turno
-"""
 
 if __name__ == "__main__":
-    player1 = Player(name = "Hero", max_health=100, strength = r.randint(1, 20), dexterity = r.randint(1, 20))
-    player2 = Player(name = "Villain", max_health=100, strength = r.randint(1, 20), dexterity = r.randint(1, 20))
+    print("=== SIMULAZIONE COMBATTIMENTO ===\n")
 
-    if player1.strength > player1.dexterity:
-        weapon1 = Weapon(name="Sword", min_damage=5, max_damage=10, type="melee")
+    # crea due personaggi con statistiche casuali (1-20)
+    p1 = Player(name="Gimli", max_health=50, strength=r.randint(1, 20), dexterity=r.randint(1, 20))
+    p2 = Player(name="Legolas", max_health=45, strength=r.randint(1, 20), dexterity=r.randint(1, 20))
+
+    print(f"{p1.name}: Forza={p1.strength}, Destrezza={p1.dexterity}")
+    print(f"{p2.name}: Forza={p2.strength}, Destrezza={p2.dexterity}\n")
+
+    # armi coerenti con la statistica prevalente
+    w1 = Weapon(name="Spada a due mani", min_damage=8, max_damage=15, type="melee") if p1.strength >= p1.dexterity else Weapon(name="Balestra", min_damage=8, max_damage=13, type="ranged")
+    w2 = Weapon(name="Spada a due mani", min_damage=8, max_damage=15, type="melee") if p2.strength >= p2.dexterity else Weapon(name="Balestra", min_damage=8, max_damage=13, type="ranged")
+
+    p1.equip_weapon(w1)
+    p2.equip_weapon(w2)
+
+    print(f"{p1.name} equipaggia: {p1.weapon}")
+    print(f"{p2.name} equipaggia: {p2.weapon}\n")
+
+    print("=== INIZIO COMBATTIMENTO ===\n")
+
+    turno = 1
+    attacker, defender = p1, p2  # p1 inizia
+    while p1.is_alive() and p2.is_alive():
+        print(f"--- Turno {turno} ---")
+        danni = attacker.attack(defender)
+        print(f"{attacker.name} attacca {defender.name} e infligge {danni} danni!")
+        print(f"{defender.name} (HP: {defender.health}/{defender.max_health})\n")
+
+        # scambia i ruoli per il turno successivo
+        attacker, defender = defender, attacker
+        turno += 1
+
+    print("=== FINE COMBATTIMENTO ===\n")
+
+    if p1.is_alive() and not p2.is_alive():
+        print(f"🏆 {p1.name} vince il combattimento! {p1}")
+    elif p2.is_alive() and not p1.is_alive():
+        print(f"🏆 {p2.name} vince il combattimento! {p2}")
     else:
-        weapon1 = Weapon(name="Bow", min_damage=3, max_damage=8, type="ranged")
-
-    if player2.strength > player2.dexterity:
-        weapon2 = Weapon(name="Axe", min_damage=6, max_damage=12, type="melee")
-    else:
-        weapon2 = Weapon(name="Crossbow", min_damage=4, max_damage=9, type="ranged")
-
-    player1.equip_weapon(weapon1)
-    player2.equip_weapon(weapon2)
-
-    print(f"{player1.name} (STR: {player1.strength}, DEX: {player1.dexterity}) equipped with {player1.weapon}")
-    print(f"{player2.name} (STR: {player2.strength}, DEX: {player2.dexterity}) equipped with {player2.weapon}")
-
-    print("\nBattle start!\n")
-
-    turn = 0
-    while player1.is_alive() and player2.is_alive():
-        if turn % 2 == 0:  #Why? Because player1 starts first
-            damage = player1.attack(player2)
-            print(f"{player1.name} attacks {player2.name} for {damage} damage. {player2.name} has {player2.health}/{player2.max_health} HP left.")
-        else:
-            damage = player2.attack(player1)
-            print(f"{player2.name} attacks {player1.name} for {damage} damage. {player1.name} has {player1.health}/{player1.max_health} HP left.")
-        turn += 1
-
-    if player1.is_alive() and not player2.is_alive():
-        print(f"{player1.name} wins!")
-    elif player2.is_alive() and not player1.is_alive():
-        print(f"{player2.name} wins!")
-    else:
-        print("It's a draw!")
+        print("Pareggio!")
