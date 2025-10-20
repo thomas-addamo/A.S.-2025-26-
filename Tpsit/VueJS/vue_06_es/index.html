@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+	   <h2>Convertitore Kg -> g</h2>
+       <input type="number" v-model.number="kg" placeholder="Inserisci i Kg">
+       <p v-if="kg">Grammi: {{ kg * 1000 }} g</p>
+       <hr>
+       <h2>Form di Registrazione</h2>
+       <div>
+          <label>Nome:</label>
+          <input type="text" v-model.trim="form.nome">
+       </div>
+       <div style="margin-top:10px;">
+          <label>Genere:</label>
+          <input type="radio" id="uomo" value="Uomo" v-model="form.genere">
+          <label for="uomo">Uomo</label>
+          <input type="radio" id="donna" value="Donna" v-model="form.genere">
+          <label for="donna">Donna</label>
+          <input type="radio" id="altro" value="Altro" v-model="form.genere">
+          <label for="altro">Altro</label>
+       </div>
+       <div style="margin-top:10px;">
+          <label>Paese:</label>
+          <select v-model="form.paese">
+             <option>Italia</option>
+             <option>Germania</option>
+             <option>Francia</option>
+             </select>
+       </div>
+
+       <div class="box" style="margin-top:20px;">
+           <h3>Riepilogo Dati:</h3>
+           <p>Nome: {{ form.nome }}</p>
+           <p>Genere: {{ form.genere }}</p>
+           <p>Paese: {{ form.paese }}</p>
+       </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>

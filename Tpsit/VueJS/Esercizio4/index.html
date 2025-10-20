@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+
+        <div id="app">
+            <div class="box">
+                <h1>Maggiorenne o Minorenne?</h1>
+                <p>Scrivi la tua età</p>
+                <input type="number" v-model="age">
+                <p>La tua età è: {{ age }}</p>
+                <p v-if="age >= 18">Sei maggiorenne</p>
+                <p v-else>Sei minorenne</p>
+            </div>
+
+            <div>
+                
+            </div>
+        </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
