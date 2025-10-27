@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; background-color: #f8d7da; }
+        .active { color: green; background-color: #d4edda; }
+        button { margin-top: 20px }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <h1>Lezioni di Vue.js - Esercizio 5</h1>
+        <h2>Stato del messaggio</h2>
+        <div class="box" :class="{'text-danger': isError, 'active': isSuccess}">
+            Questo è un messaggio di stato.
+        </div>
+        <button @click="messaggioErrore">Imposta come errore</button>
+        <button @click="messaggioSuccesso">Imposta come successo</button>
+
+        <h2>Avatar</h2>
+        <input type="color" v-model="coloreAvatar">
+        <input type="range" min="30" max="100" v-model="dimensioneAvatar">
+        <input type="range" min="30" max="100" v-model="larghezza">
+        <div class="box" :style="{ backgroundColor: coloreAvatar, width: larghezza + 'px', height: dimensioneAvatar + 'px' }">
+            Questo è un Avatar
+        </div>
+
+        <!--Da completare-->
+        <h2></h2>
+        </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
