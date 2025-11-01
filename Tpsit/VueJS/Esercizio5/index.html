@@ -31,9 +31,19 @@
             Questo è un Avatar
         </div>
 
-        <!--Da completare-->
-        <h2></h2>
+        <h2>Saluto utente</h2>
+        <input type="text" v-model="nomeUtente" placeholder="Inserisci il tuo nome">
+        <button @click="salutaUtente">Saluta</button>
+        <div class="box">
+            {{ messaggioSaluto }}
         </div>
+
+        <h2>Componenti</h2>
+        <info-card></info-card>
+
+        <saluto-utente></saluto-utente>
+        
+    </div>
 
     <script src="https://unpkg.com/vue@3"></script>
     <script src="./app.js"></script>
