@@ -13,18 +13,17 @@
 </head>
 <body>
 
-    <div id="app">
-       <h2>Cambia Messaggio</h2>
-       <p>{{ messaggio }}</p>
-       <button @click="cambiaTesto">Clicca qui</button>
-       <hr>
-       <h2>Accendi/Spegni</h2>
-       <button @click="toggleLuce">Toggle Luce</button>
-       <p v-if="luceAccesa" class="box" style="background-color: #fff3cd;">La luce è accesa.</p>
-       <p v-else class="box">La luce è spenta.</p>
-    </div>
+   <div id="app">
+      <h2>Saluto Utente</h2>
+      <saluto-utente></saluto-utente>
+      <saluto-utente></saluto-utente>
+      <hr>
+      <h2>Info Card</h2>
+      <info-card></info-card>
+      <info-card></info-card>
+   </div>
 
-    <script src="https://unpkg.com/vue@3"></script>
-    <script src="./app.js"></script>
+   <script src="https://unpkg.com/vue@3"></script>
+   <script src="./app.js"></script>
 </body>
 </html>
