@@ -10,7 +10,7 @@ class Mano:
     @property
     def carte(self):
         return self.__carte
-    
+
     def svuota(self):
         self.__carte = []
 
