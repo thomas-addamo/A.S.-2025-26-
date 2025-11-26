@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+
+   <div id="app">
+      <h2>Modale</h2>
+      <modal-dialog v-if="modaleAperta" @chiudi="chiudiLaModale"></modal-dialog>
+      <p v-if="!modaleAperta">Hai chiuso la modale!</p>
+      <div style="height: 200px;"></div> <hr>
+      <h2>Valutazione a Stelle</h2>
+      <star-rating @imposta-valutazione="impostaLaValutazione"></star-rating>
+      <p v-if="valutazioneCorrente > 0">
+          Hai dato una valutazione di: <b>{{ valutazioneCorrente }} stelle</b>.
+      </p>		
+   </div>
+
+   <script src="https://unpkg.com/vue@3"></script>
+   <script src="./app.js"></script>
+</body>
+</html>

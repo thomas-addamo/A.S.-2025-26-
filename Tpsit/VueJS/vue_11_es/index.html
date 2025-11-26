@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezioni di Vue.js</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 15px; border: 1px solid #ccc; margin-top: 10px; border-radius: 5px; background-color: #f9f9f9; }
+        .text-danger { color: red; }
+        .active { background-color: #d4edda; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+
+   <div id="app">
+      <h2>Card Prodotti</h2>
+      <product-card
+         v-for="p in prodotti"
+         :key="p.id"
+         :nome-prodotto="p.nome"
+         :prezzo="p.prezzo">
+      </product-card>
+      <hr>
+      <h2>Alert Box</h2>
+      <alert-box messaggio="Operazione completata con successo!" tipo="success"></alert-box>
+      <alert-box messaggio="Si è verificato un errore." tipo="error"></alert-box>		
+   </div>
+
+   <script src="https://unpkg.com/vue@3"></script>
+   <script src="./app.js"></script>
+</body>
+</html>
