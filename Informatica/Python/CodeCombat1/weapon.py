@@ -1,68 +1,50 @@
 import random as r
 
 class Weapon:
-    def __init__(self, name: str, min_damage: int, max_damage: int, type: str):
+    def __init__(self, name: str, min_damage: int, max_damage: int, weapon_type: str):
+        if name == "":
+            raise ValueError("Name cannot be empty.")
+
+        if min_damage < 1 and min_damage > max_damage:
+            raise ValueError("Minimum damage must be at least 1 and less than maximum damage.")
+
+        if max_damage <= min_damage:
+            raise ValueError("Maximum damage must be at least equal to minimum damage.")
+
+        if not weapon_type == "melee" or weapon_type == "ranged":
+            raise ValueError("Type must be either 'melee' or 'ranged'.")
+
         self.__name = name
+        self.__min_damage = min_damage
+        self.__max_damage = max_damage
+        self.__type = weapon_type
 
-        if min_damage >= 1:
-            self.__min_damage = min_damage
+    @property
+    def name(self):
+        return self.__name
+    
+    @name.setter
+    def name(self, new_name):
+        if new_name == "":
+            raise ValueError("The new name cannot be empty.")
         else:
-            print("Minimum damage must be at least 1.")
-            self.__min_damage = 1
+            self.__name = new_name
 
-        if max_damage >= min_damage:
-            self.__max_damage = max_damage
-        else:
-            print("Maximum damage must be at least equal to minimum damage.")
-            self.__max_damage = min_damage + 1
+    @property
+    def min_damage(self):
+        return self.__min_damage
 
-        if type == "melee" or type == "ranged":
-            self.__type = type
-        else:
-            print("Type must be either 'melee' or 'ranged'.")
-            self.__type = "melee"
+    @property
+    def max_damage(self):
+        return self.__max_damage
+    
+    @property
+    def type(self):
+        return self.__type
 
+# Methods
     def get_damage(self) -> int:
         return r.randint(self.__min_damage, self.__max_damage)
 
     def __str__(self) -> str:
         return f"Weapon(Name: {self.__name}, Type: {self.__type}, Damage: {self.__min_damage}-{self.__max_damage})"
-    
-
-    # Getter for attributes
-    def get_name(self) -> str:
-        return self.__name
-
-    def get_min_damage(self) -> int:
-        return self.__min_damage
-
-    def get_max_damage(self) -> int:
-        return self.__max_damage
-
-    def get_type(self) -> str:
-        return self.__type
-
-    # Setter for attributes
-    def set_name(self, name: str) -> None:
-        self.__name = name
-
-    def set_min_damage(self, min_damage: int) -> None:
-        if min_damage >= 1:
-            self.__min_damage = min_damage
-        else:
-            print("Minimum damage must be at least 1.")
-            self.__min_damage = 1
-
-    def set_max_damage(self, max_damage: int) -> None:
-        if max_damage >= self.__min_damage:
-            self.__max_damage = max_damage
-        else:
-            print("Maximum damage must be at least equal to minimum damage.")
-            self.__max_damage = self.__min_damage + 1
-
-    def set_type(self, type: str) -> None:
-        if type == "melee" or type == "ranged":
-            self.__type = type
-        else:
-            print("Type must be either 'melee' or 'ranged'.")
-            self.__type = "melee"
