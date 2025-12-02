@@ -25,7 +25,6 @@ class Player:
         self.__buffs = []
         self.__potions = potions if potions is not None else []
 
-
     @property
     def name(self):
         return self.__name
@@ -73,10 +72,19 @@ class Player:
     
     @weapon.setter
     def weapon(self, new_weapon):
-        if isinstance(new_weapon) == Weapon:
+        if isinstance(new_weapon, Weapon):
             self.__weapon = new_weapon
         else:
-            raise TypeError("The new weapon must be a Weapon.")
+            raise TypeError("The new weapon must be a Weapon.") 
+        
+    @property
+    def potions(self):
+        return self.__potions
+    
+    @potions.setter
+    def potions(self, new_potions):
+        if isinstance(new_potions, Potion):
+            self.__potions.append(new_potions)
 
 # Methods
     def modifier(self, value: int) -> int:
@@ -121,14 +129,35 @@ class Player:
             self.__currently_dexterity += amount
             self.__buffs.append([effect, amount, duration])
 
-    def tick_buffs(self) -> None:
+    def tick_buffs(self) -> bool:
         for buff in self.__buffs:
             buff[2] -= 1
             if buff[2] <= 0:
                 if buff[0] == "buff_str":
                     self.__currently_strength -= buff[1]
+                    return True
                 elif buff[0] == "buff_dex":
                     self.__currently_dexterity -= buff[1]
+                    return True
+        return False
+
+# Private methods to decide potion usage
+    def __should_use_potion_health(self):
+        if self.__health / self.__max_health < 0.3 and any(p.effect == "health" for p in self.__potions):
+            return True
+        return False
+        
+    def __should_use_potion_buff(self):
+        if any(p.effect in ["buff_str","buss_dex"] for p in self.__potions):
+            return True
+        return False
+
+    def should_use_potion(self):
+        if self.__should_use_potion_health():
+            return "health"
+        elif self.__should_use_potion_buff():
+            return "buff"
+        return None
 
     def __str__(self) -> str:
         weapon_str = str(self.__weapon) if self.__weapon else "No Weapon"

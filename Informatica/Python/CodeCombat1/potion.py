@@ -1,5 +1,3 @@
-from player import Player
-
 class Potion:
     def __init__(self, name: str, effect: str, amount: int, duration: int):
         if name == "":
@@ -39,7 +37,7 @@ class Potion:
         return self.__duration
 
 # Methods 
-    def apply_to(self, target: Player):
+    def apply_to(self, target):
         if self.__applied:
             raise Exception("Potion has already been applied.")
 

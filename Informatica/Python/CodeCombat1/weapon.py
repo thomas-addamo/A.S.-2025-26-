@@ -11,7 +11,7 @@ class Weapon:
         if max_damage <= min_damage:
             raise ValueError("Maximum damage must be at least equal to minimum damage.")
 
-        if not weapon_type == "melee" or weapon_type == "ranged":
+        if not weapon_type == "melee" and not weapon_type == "ranged":
             raise ValueError("Type must be either 'melee' or 'ranged'.")
 
         self.__name = name

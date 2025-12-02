@@ -1,53 +1,99 @@
 from player import Player
 from weapon import Weapon
+from potion import Potion
 import random as r
 
-"""
-- Dentro il blocco `if __name__ == "__main__"`: esegui:
-    1. Crea due personaggi con valori casuali di forza e destrezza (usa `randint`)
-    2. Assegna a ciascun personaggio un’arma coerente: se la forza > destrezza → arma da mischia, altrimenti arma a distanza
-    3. Equipaggia le armi
-    4. Simula turni alternati di attacco:
-        - stampa l’esito di ogni turno (danni inflitti, hp rimanenti)
-        - ferma il ciclo quando uno (o entrambi) muoiono
-    5. Stampa il vincitore, oppure “pareggio” se muoiono nello stesso turno
-"""
+def create_weapon(player: Player) -> None:
+    melee = [
+        Weapon("Sword", r.randint(8,12), r.randint(13,18), "melee"),
+        Weapon("Axe", r.randint(10,15), r.randint(16,20), "melee"),
+        Weapon("Dagger", r.randint(5,10), r.randint(11,15), "melee")
+    ]
+    ranged = [
+        Weapon("Bow", r.randint(5,10), r.randint(11,15), "ranged"),
+        Weapon("Crossbow", r.randint(7,12), r.randint(13,17), "ranged"),
+        Weapon("Throwing Knives", r.randint(4,9), r.randint(10,14), "ranged")
+    ]
+    if player.strength < player.dexterity:
+        player.weapon = r.choice(ranged)
+    else:
+        player.weapon = r.choice(melee)
+
+def create_potion(player: Player) -> None:
+    potion_health = Potion("Health Potion", "heal", r.randint(15,30), 0)
+    potion_strength = Potion("Strength Elixir", "buff_str", r.randint(2,5), r.randint(3,6)),
+    potion_dexterity = Potion("Dexterity Draught", "buff_dex", r.randint(2,5), r.randint(3,6))
+    
+    player.potions.append(potion_health)
+    if player.strength < player.dexterity:
+        player.potions = potion_dexterity
+    else:
+        player.potions = potion_strength
+
+def create_player() -> Player:
+    names = ["Arin", "Borin", "Cirin", "Dorin", "Erin", "Fin", "Gorin", "Hirin"]
+    player = Player(r.choice(names), r.randint(50,100), r.randint(1,20), r.randint(1,20))
+    create_weapon(player)
+    create_potion(player)
+    return player
+
+def main():
+    player1 = create_player()
+    player2 = create_player()
+    print("Player 1:")
+    print(player1)
+    print("\nPlayer 2:")
+    print(player2)
+
+    counter = 0
+    while True:
+        counter += 1
+        print(f"Turn: {counter}")
+
+        if player1.tick_buffs():
+            print(f"{player1.name} has finished the buff.")
+        if player2.tick_buffs():
+            print(f"{player2.name} has finished the buff.")
+
+        # Start of the turn
+        if player1.should_use_potion() == "health":
+            for potion in player1.potions:
+                if potion.effect == "heal":
+                    potion.apply_to(player1)
+                    print(f"{player1.name} uses {potion.name} and heals to {player1.health} health.")
+                    break
+        elif player1.should_use_potion() in ["buff_str", "buff_dex"]:
+            for potion in player1.potions:
+                if potion.effect == player1.should_use_potion():
+                    potion.apply_to(player1)
+                    print(f"{player1.name} uses {potion.name} and buffs {potion.effect.split('_')[1]}.")
+                    break
+
+        damage = player1.attack(player2)
+        print(f"{player1.name} attacks {player2.name} for {damage} damage. {player2.name} has {player2.health} health left.")
+        if player2.is_alive() == False:
+            print(f"{player2.name} has been defeated! {player1.name} wins!")
+            break
+
+        # Swap turns
+        if player2.should_use_potion() == "health":
+            for potion in player2.potions:
+                if potion.effect == "heal":
+                    potion.apply_to(player2)
+                    print(f"{player2.name} uses {potion.name} and heals to {player2.health} health.")
+                    break
+        elif player2.should_use_potion() in ["buff_str", "buff_dex"]:
+            for potion in player2.potions:
+                if potion.effect == player2.should_use_potion():
+                    potion.apply_to(player2)
+                    print(f"{player2.name} uses {potion.name} and buffs {potion.effect.split('_')[1]}.")
+                    break
+
+        damage = player2.attack(player2)
+        print(f"{player2.name} attacks {player1.name} for {damage} damage. {player1.name} has {player1.health} health left.")
+        if player1.is_alive() == False:
+            print(f"{player1.name} has been defeated! {player2.name} wins!")
+            break
 
 if __name__ == "__main__":
-    player1 = Player(name = "Hero", max_health=100, strength = r.randint(1, 20), dexterity = r.randint(1, 20))
-    player2 = Player(name = "Villain", max_health=100, strength = r.randint(1, 20), dexterity = r.randint(1, 20))
-
-    if player1.get_strength() > player1.get_dexterity():
-        weapon1 = Weapon(name="Sword", min_damage=5, max_damage=10, type="melee")
-    else:
-        weapon1 = Weapon(name="Bow", min_damage=3, max_damage=8, type="ranged")
-
-    if player2.get_strength() > player2.get_dexterity():
-        weapon2 = Weapon(name="Axe", min_damage=6, max_damage=12, type="melee")
-    else:
-        weapon2 = Weapon(name="Crossbow", min_damage=4, max_damage=9, type="ranged")
-
-    player1.equip_weapon(weapon1)
-    player2.equip_weapon(weapon2)
-
-    print(f"{player1.get_name()} (STR: {player1.get_strength()}, DEX: {player1.get_dexterity()}) equipped with {player1.get_weapon()}")
-    print(f"{player2.get_name()} (STR: {player2.get_strength()}, DEX: {player2.get_dexterity()}) equipped with {player2.get_weapon()}")
-
-    print("\nBattle start!\n")
-
-    turn = 0
-    while player1.is_alive() and player2.is_alive():
-        if turn % 2 == 0:  #Why? Because player1 starts first
-            damage = player1.attack(player2)
-            print(f"{player1.get_name()} attacks {player2.get_name()} for {damage} damage. {player2.get_name()} has {player2.get_health()}/{player2.get_max_health()} HP left.")
-        else:
-            damage = player2.attack(player1)
-            print(f"{player2.get_name()} attacks {player1.get_name()} for {damage} damage. {player1.get_name()} has {player1.get_health()}/{player1.get_max_health()} HP left.")
-        turn += 1
-
-    if player1.is_alive() and not player2.is_alive():
-        print(f"{player1.get_name()} wins!")
-    elif player2.is_alive() and not player1.is_alive():
-        print(f"{player2.get_name()} wins!")
-    else:
-        print("It's a draw!")
+    main()
