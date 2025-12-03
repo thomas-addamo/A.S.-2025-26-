@@ -144,25 +144,38 @@ class Player:
 # Private methods to decide potion usage
     def __should_use_potion_health(self):
         if self.__health / self.__max_health < 0.3 and any(p.effect == "health" for p in self.__potions):
+            for p in self.__potions:
+                if p.applied:
+                    return False
             return True
         return False
         
     def __should_use_potion_buff(self):
-        if any(p.effect in ["buff_str","buss_dex"] for p in self.__potions):
-            return True
+        if any(p.effect in ["buff_str"] for p in self.__potions):
+            for p in self.__potions:
+                if p.applied:
+                    return False
+            return "buff_str"
+        if any(p.effect in ["buff_dex"] for p in self.__potions):
+            for p in self.__potions:
+                if p.applied:
+                    return False
+            return "buff_dex"
         return False
 
     def should_use_potion(self):
         if self.__should_use_potion_health():
             return "health"
-        elif self.__should_use_potion_buff():
-            return "buff"
+        elif self.__should_use_potion_buff() == "buff_str":
+            return "buff_str"
+        elif self.__should_use_potion_buff() == "buff_dex":
+            return "buff_dex"
         return None
 
     def __str__(self) -> str:
         weapon_str = str(self.__weapon) if self.__weapon else "No Weapon"
-        return (f"Player(Name: {self.__name}, Health: {self.__health}/{self.__max_health}, "
-                f"Strength: {self.__strength}, Dexterity: {self.__dexterity}, "
-                f"Buffs: {self.__buffs}, "
-                f"Weapon: {weapon_str})"
-                f"Potions: {self.__potions})")
+        return (f"Name: {self.__name}, Health: {self.__health}/{self.__max_health}, \n"
+                f"Strength: {self.__strength}, Dexterity: {self.__dexterity}, \n"
+                f"Buffs: {self.__buffs}, \n"
+                f"Weapon: {weapon_str}) \n"
+                f"Potions: {self.__potions} \n")

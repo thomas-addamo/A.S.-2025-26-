@@ -35,11 +35,15 @@ class Potion:
         if self.effect == "heal":
             return "instant"
         return self.__duration
+    
+    @property
+    def applied(self):
+        return self.__applied
 
 # Methods 
     def apply_to(self, target):
         if self.__applied:
-            raise Exception("Potion has already been applied.")
+            return  # Potion has already been applied
 
         if self.effect == "heal":
             if hasattr(target, 'heal') and callable(getattr(target, 'heal')):
@@ -55,4 +59,7 @@ class Potion:
             raise ValueError("Unknown effect type.")
 
     def __str__(self):
-        return f"Potion(name: {self.name}, effect: {self.effect}, amount: {self.amount}, duration: {self.duration})"
+        return f"Name: {self.name}, effect: {self.effect}, amount: {self.amount}, duration: {self.duration}"
+    
+    def __repr__(self):
+        return self.__str__()

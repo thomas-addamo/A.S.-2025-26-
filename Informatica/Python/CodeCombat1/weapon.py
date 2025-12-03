@@ -47,4 +47,4 @@ class Weapon:
         return r.randint(self.__min_damage, self.__max_damage)
 
     def __str__(self) -> str:
-        return f"Weapon(Name: {self.__name}, Type: {self.__type}, Damage: {self.__min_damage}-{self.__max_damage})"
+        return f"Name: {self.__name}, Type: {self.__type}, Damage: {self.__min_damage}-{self.__max_damage}"

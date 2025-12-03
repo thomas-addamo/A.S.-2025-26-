@@ -21,11 +21,11 @@ def create_weapon(player: Player) -> None:
 
 def create_potion(player: Player) -> None:
     potion_health = Potion("Health Potion", "heal", r.randint(15,30), 0)
-    potion_strength = Potion("Strength Elixir", "buff_str", r.randint(2,5), r.randint(3,6)),
+    potion_strength = Potion("Strength Elixir", "buff_str", r.randint(2,5), r.randint(3,6))
     potion_dexterity = Potion("Dexterity Draught", "buff_dex", r.randint(2,5), r.randint(3,6))
     
     player.potions.append(potion_health)
-    if player.strength < player.dexterity:
+    if player.strength <= player.dexterity:
         player.potions = potion_dexterity
     else:
         player.potions = potion_strength
@@ -48,7 +48,11 @@ def main():
     counter = 0
     while True:
         counter += 1
+        print("\n" + "="*20)
         print(f"Turn: {counter}")
+
+        print(f"\n{player1.name}'s Status: str: {player1.strength}, dex: {player1.dexterity}, health: {player1.health}")
+        print(f"{player2.name}'s Status: str: {player2.strength}, dex: {player2.dexterity}, health: {player2.health}")
 
         if player1.tick_buffs():
             print(f"{player1.name} has finished the buff.")
@@ -62,7 +66,7 @@ def main():
                     potion.apply_to(player1)
                     print(f"{player1.name} uses {potion.name} and heals to {player1.health} health.")
                     break
-        elif player1.should_use_potion() in ["buff_str", "buff_dex"]:
+        elif player1.should_use_potion() == "buff_str" or player1.should_use_potion() == "buff_dex":
             for potion in player1.potions:
                 if potion.effect == player1.should_use_potion():
                     potion.apply_to(player1)
@@ -82,7 +86,7 @@ def main():
                     potion.apply_to(player2)
                     print(f"{player2.name} uses {potion.name} and heals to {player2.health} health.")
                     break
-        elif player2.should_use_potion() in ["buff_str", "buff_dex"]:
+        elif player2.should_use_potion() == "buff_str" or player2.should_use_potion() == "buff_dex":
             for potion in player2.potions:
                 if potion.effect == player2.should_use_potion():
                     potion.apply_to(player2)
