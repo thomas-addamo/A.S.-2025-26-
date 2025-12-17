@@ -11,7 +11,7 @@ class Weapon:
         if max_damage <= min_damage:
             raise ValueError("Maximum damage must be at least equal to minimum damage.")
 
-        if not weapon_type == "melee" and not weapon_type == "ranged":
+        if not weapon_type == "melee" or weapon_type == "ranged":
             raise ValueError("Type must be either 'melee' or 'ranged'.")
 
         self.__name = name
@@ -47,4 +47,4 @@ class Weapon:
         return r.randint(self.__min_damage, self.__max_damage)
 
     def __str__(self) -> str:
-        return f"Name: {self.__name}, Type: {self.__type}, Damage: {self.__min_damage}-{self.__max_damage}"
+        return f"Weapon(Name: {self.__name}, Type: {self.__type}, Damage: {self.__min_damage}-{self.__max_damage})"

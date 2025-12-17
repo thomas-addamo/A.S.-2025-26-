@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Animated Speedometer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #222 0%, #050505 60%, #000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #eee;
+    }
+
+    .speedometer-container {
+      width: 360px;
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .dial-bg {
+      fill: #111;
+    }
+
+    .dial-ring {
+      fill: none;
+      stroke: #444;
+      stroke-width: 18;
+      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.7));
+      transition: stroke 0.25s ease, filter 0.25s ease;
+    }
+
+    .dial-ring.overspeed {
+      stroke: #ff3b3b;
+      filter: drop-shadow(0 0 14px rgba(255, 0, 0, 0.9));
+    }
+
+    .tick {
+      stroke: #777;
+      stroke-width: 2;
+    }
+
+    .tick.minor {
+      stroke-width: 1;
+      stroke: #555;
+      opacity: 0.7;
+    }
+
+    .label {
+      fill: #ccc;
+      font-size: 11px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .needle {
+      stroke: #f5f5f5;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.8));
+    }
+
+    .needle-tail {
+      stroke: #f5f5f5;
+      stroke-width: 2;
+      stroke-linecap: round;
+      opacity: 0.7;
+    }
+
+    .center-cap {
+      fill: #f5f5f5;
+      stroke: #111;
+      stroke-width: 3;
+    }
+
+    .center-cap-inner {
+      fill: #333;
+    }
+
+    .speed-readout {
+      font-size: 32px;
+      font-weight: 600;
+      text-anchor: middle;
+      fill: #f5f5f5;
+    }
+
+    .unit-label {
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      fill: #999;
+      text-anchor: middle;
+    }
+
+    .brand {
+      font-size: 10px;
+      text-anchor: middle;
+      fill: #555;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+<div class="speedometer-container">
+  <svg id="speedometer" viewBox="0 0 300 300">
+    <!-- Background -->
+    <circle class="dial-bg" cx="150" cy="150" r="140"></circle>
+
+    <!-- Outer ring that will glow red -->
+    <circle class="dial-ring" id="dial-ring" cx="150" cy="150" r="115"></circle>
+
+    <!-- Tick marks & labels will be injected here -->
+    <g id="ticks"></g>
+
+    <!-- Needle (base orientation pointing to the right / 0°) -->
+    <line id="needle-tail" class="needle-tail" x1="150" y1="150" x2="190" y2="150"></line>
+    <line id="needle" class="needle" x1="150" y1="150" x2="245" y2="150"></line>
+
+    <!-- Center caps -->
+    <circle class="center-cap" cx="150" cy="150" r="10"></circle>
+    <circle class="center-cap-inner" cx="150" cy="150" r="5"></circle>
+
+    <!-- Readout -->
+    <text id="speed-text" class="speed-readout" x="150" y="185">0</text>
+    <text class="unit-label" x="150" y="205">km/h</text>
+    <text class="brand" x="150" y="225">SPEEDOMETER</text>
+  </svg>
+</div>
+
+<script>
+  (function () {
+    const svgNS = "http://www.w3.org/2000/svg";
+    const maxScale = 220;        // scale labels 0..220 km/h
+    const animMaxSpeed = 180;    // peak speed for animation (goes beyond 120)
+    const overspeedThreshold = 120;
+    const startAngle = 135;      // degrees, left side
+    const endAngle = 45;         // degrees, right side
+    const centerX = 150;
+    const centerY = 150;
+
+    const ticksGroup = document.getElementById("ticks");
+    const needle = document.getElementById("needle");
+    const needleTail = document.getElementById("needle-tail");
+    const speedText = document.getElementById("speed-text");
+    const dialRing = document.getElementById("dial-ring");
+
+    function speedToAngle(speed) {
+      // map speed (0..maxScale) to angle (startAngle..endAngle)
+      const clamped = Math.max(0, Math.min(maxScale, speed));
+      const ratio = clamped / maxScale;
+      return startAngle + (endAngle - startAngle) * ratio;
+    }
+
+    // Build ticks and labels (0 - 220)
+    function createTicks() {
+      const outerRadius = 115;
+      const innerRadiusMajor = 100;
+      const innerRadiusMinor = 107;
+      const labelRadius = 88;
+
+      // Major ticks & labels every 20 km/h
+      for (let value = 0; value <= maxScale; value += 20) {
+        const angle = speedToAngle(value);
+        const rad = angle * Math.PI / 180;
+
+        const xOuter = centerX + outerRadius * Math.cos(rad);
+        const yOuter = centerY + outerRadius * Math.sin(rad);
+        const xInner = centerX + innerRadiusMajor * Math.cos(rad);
+        const yInner = centerY + innerRadiusMajor * Math.sin(rad);
+
+        // major tick
+        const tick = document.createElementNS(svgNS, "line");
+        tick.setAttribute("x1", xInner);
+        tick.setAttribute("y1", yInner);
+        tick.setAttribute("x2", xOuter);
+        tick.setAttribute("y2", yOuter);
+        tick.setAttribute("class", "tick");
+        ticksGroup.appendChild(tick);
+
+        // label
+        const lx = centerX + labelRadius * Math.cos(rad);
+        const ly = centerY + labelRadius * Math.sin(rad);
+        const label = document.createElementNS(svgNS, "text");
+        label.setAttribute("x", lx);
+        label.setAttribute("y", ly);
+        label.setAttribute("class", "label");
+        label.textContent = value.toString();
+        ticksGroup.appendChild(label);
+
+        // minor tick halfway to next (except after 220)
+        if (value < maxScale) {
+          const midVal = value + 10;
+          const midAngle = speedToAngle(midVal);
+          const midRad = midAngle * Math.PI / 180;
+          const mxOuter = centerX + outerRadius * Math.cos(midRad);
+          const myOuter = centerY + outerRadius * Math.sin(midRad);
+          const mxInner = centerX + innerRadiusMinor * Math.cos(midRad);
+          const myInner = centerY + innerRadiusMinor * Math.sin(midRad);
+
+          const minorTick = document.createElementNS(svgNS, "line");
+          minorTick.setAttribute("x1", mxInner);
+          minorTick.setAttribute("y1", myInner);
+          minorTick.setAttribute("x2", mxOuter);
+          minorTick.setAttribute("y2", myOuter);
+          minorTick.setAttribute("class", "tick minor");
+          ticksGroup.appendChild(minorTick);
+        }
+      }
+    }
+
+    function setNeedleAngle(angle) {
+      // base needle is oriented at 0° (pointing right)
+      needle.setAttribute("transform", `rotate(${angle} ${centerX} ${centerY})`);
+      needleTail.setAttribute("transform", `rotate(${angle} ${centerX} ${centerY})`);
+    }
+
+    function updateGlow(speed) {
+      if (speed > overspeedThreshold) {
+        dialRing.classList.add("overspeed");
+      } else {
+        dialRing.classList.remove("overspeed");
+      }
+    }
+
+    function animate() {
+      const startTime = performance.now();
+      const period = 8000; // total cycle duration in ms (8 seconds)
+
+      function frame(now) {
+        const elapsed = (now - startTime) % period;
+        const t = elapsed / period; // 0..1
+
+        // Smooth 0 -> 1 -> 0 using cosine (ease in/out)
+        const normalized = 0.5 - 0.5 * Math.cos(2 * Math.PI * t);
+        const speed = normalized * animMaxSpeed;
+
+        const angle = speedToAngle(speed);
+        setNeedleAngle(angle);
+
+        speedText.textContent = Math.round(speed).toString();
+        updateGlow(speed);
+
+        requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    createTicks();
+    animate();
+  })();
+</script>
+</body>
+</html>
