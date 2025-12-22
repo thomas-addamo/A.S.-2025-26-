@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe4448ee-c83c-4696-a85d-4bbd2556219b" name="Changes" comment="Update workspace and configuration files; add migration states and new Python script">
-      <change afterPath="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali/spaceships.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Informatica/Python/ripasso.py" beforeDir="false" afterPath="$PROJECT_DIR$/Informatica/Python/ripasso.py" afterDir="false" />
-    </list>
+    <list default="true" id="fe4448ee-c83c-4696-a85d-4bbd2556219b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,7 +76,7 @@
       <workItem from="1765964712986" duration="76000" />
       <workItem from="1765964814220" duration="39000" />
       <workItem from="1765964908291" duration="1153000" />
-      <workItem from="1766329260668" duration="6381000" />
+      <workItem from="1766329260668" duration="6468000" />
     </task>
     <task id="LOCAL-00001" summary="Update workspace and configuration files; add migration states and new Python script">
       <option name="closed" value="true" />
@@ -90,7 +86,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766329379789</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Refactor spaceship classes; add CargoShip and StarFighter with enhanced flying methods">
+      <option name="closed" value="true" />
+      <created>1766410325701</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1766410325701</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -98,7 +102,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update workspace and configuration files; add migration states and new Python script" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update workspace and configuration files; add migration states and new Python script" />
+    <MESSAGE value="Refactor spaceship classes; add CargoShip and StarFighter with enhanced flying methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor spaceship classes; add CargoShip and StarFighter with enhanced flying methods" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/A_S__2025_26_$prova.coverage" NAME="prova Coverage Results" MODIFIED="1765972908825" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Informatica/Python" />
