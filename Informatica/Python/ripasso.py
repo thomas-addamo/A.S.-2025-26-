@@ -1,53 +1,46 @@
-# Programma di confronto sconti tra due negozi
+# 1. CLASSE GENITORE
+class Spaceship:
+    def __init__(self, name, shield):
+        self.name = name
+        self.shield = shield
 
-def negozio1(spesa):
-    """Calcola sconto e totale per il primo negozio."""
-    if spesa <= 0:
-        return None, None
-    if spesa > 500:
-        sconto = spesa * 0.20
-    else:
-        sconto = spesa * 0.10
-    totale = spesa - sconto
-    return sconto, totale
+    def fly(self):
+        print(f"🚀 {self.name} sta viaggiando nel vuoto siderale.")
 
 
-def negozio2(spesa):
-    """Calcola sconto e totale per il secondo negozio."""
-    if spesa <= 0:
-        return None, None
-    if spesa <= 300:
-        sconto = spesa * 0.10
-    else:
-        parte1 = 300 * 0.10
-        parte2 = (spesa - 300) * 0.20
-        sconto = parte1 + parte2
-    totale = spesa - sconto
-    return sconto, totale
+# 2. CLASSE FIGLIA - ESTENSIONE
+# Usa super() per mantenere la logica del padre e aggiungere cose
+class CargoShip(Spaceship):
+    def __init__(self, name, shield, max_tonnage):
+        super().__init__(name, shield)  # Chiama il costruttore del padre
+        self.max_tonnage = max_tonnage
+        self.current_load = 0
+
+    def fly(self):
+        print(f"📦 Controlli di carico completati ({self.current_load} ton).")
+        super().fly()  # Esegue il volo standard
+
+    def load(self, amount):
+        self.current_load += amount
+        print(f"Carico imbarcato.")
 
 
-def confronto(spesa):
-    """Determina quale negozio è più conveniente."""
-    s1, t1 = negozio1(spesa)
-    s2, t2 = negozio2(spesa)
-
-    if s1 is None or s2 is None:
-        print("Errore: inserisci una spesa positiva e maggiore di zero.")
-        return
-
-    print(f"\n--- RISULTATI ---")
-    print(f"Spesa iniziale: €{spesa:.2f}")
-    print(f"Negozio 1 -> Sconto: €{s1:.2f} | Totale: €{t1:.2f}")
-    print(f"Negozio 2 -> Sconto: €{s2:.2f} | Totale: €{t2:.2f}")
-
-    if t1 < t2:
-        print("Conviene acquistare nel Negozio 1 ✅")
-    elif t2 < t1:
-        print("Conviene acquistare nel Negozio 2 ✅")
-    else:
-        print("È indifferente: il prezzo finale è lo stesso nei due negozi.")
+# 3. CLASSE FIGLIA - SOSTITUZIONE (OVERRIDE TOTALE)
+# Riscrive completamente il metodo fly
+class StarFighter(Spaceship):
+    def fly(self):
+        print(f"⚔️ {self.name} accende i post-bruciatori! Modalità combattimento!")
 
 
-# --- Programma principale ---
-spesa = float(input("Inserisci l'importo della spesa (€): "))
-confronto(spesa)
+# --- TEST ---
+print("--- COSTRUZIONE FLOTTA ---")
+generic_ship = Spaceship("Explorer 1", 50)
+heavy_cargo = CargoShip("Nostromo", 200, 5000)
+fighter = StarFighter("Red Leader", 80)
+
+print("\n--- DECOLLO ---")
+generic_ship.fly()  # Usa metodo base
+print("-" * 20)
+heavy_cargo.fly()  # Usa metodo esteso (codice figlio + codice padre)
+print("-" * 20)
+fighter.fly()  # Usa metodo sovrascritto (solo codice figlio)
