@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe4448ee-c83c-4696-a85d-4bbd2556219b" name="Changes" comment="Update workspace configuration; remove comments and adjust task durations">
+    <list default="true" id="fe4448ee-c83c-4696-a85d-4bbd2556219b" name="Changes" comment="Enhance spaceship functionality; add CargoShip and ExplorationProbe classes with improved flying and loading methods">
+      <change afterPath="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali/fleet_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali/spaceships.py" beforeDir="false" afterPath="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali/spaceships.py" afterDir="false" />
     </list>
@@ -33,6 +34,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali/fleet_manager.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali/spaceships.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/Informatica/Python/ripasso.py" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -46,6 +48,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.fleet_manager.executor": "Run",
     "Python.prova.executor": "Run",
     "Python.ripasso.executor": "Run",
     "Python.spaceships.executor": "Run",
@@ -56,7 +59,7 @@
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
     "git-widget-placeholder": "main",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -81,7 +84,7 @@
       <workItem from="1765964814220" duration="39000" />
       <workItem from="1765964908291" duration="1153000" />
       <workItem from="1766329260668" duration="6468000" />
-      <workItem from="1766410415861" duration="1813000" />
+      <workItem from="1766410415861" duration="5284000" />
     </task>
     <task id="LOCAL-00001" summary="Update workspace and configuration files; add migration states and new Python script">
       <option name="closed" value="true" />
@@ -107,7 +110,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766410455854</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Enhance spaceship functionality; add CargoShip and ExplorationProbe classes with improved flying and loading methods">
+      <option name="closed" value="true" />
+      <created>1766412529360</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1766412529360</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,11 +128,13 @@
     <MESSAGE value="Update workspace and configuration files; add migration states and new Python script" />
     <MESSAGE value="Refactor spaceship classes; add CargoShip and StarFighter with enhanced flying methods" />
     <MESSAGE value="Update workspace configuration; remove comments and adjust task durations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update workspace configuration; remove comments and adjust task durations" />
+    <MESSAGE value="Enhance spaceship functionality; add CargoShip and ExplorationProbe classes with improved flying and loading methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Enhance spaceship functionality; add CargoShip and ExplorationProbe classes with improved flying and loading methods" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/A_S__2025_26_$prova.coverage" NAME="prova Coverage Results" MODIFIED="1765972908825" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Informatica/Python" />
-    <SUITE FILE_PATH="coverage/A_S__2025_26_$spaceships.coverage" NAME="spaceships Coverage Results" MODIFIED="1766412225047" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali" />
+    <SUITE FILE_PATH="coverage/A_S__2025_26_$spaceships.coverage" NAME="spaceships Coverage Results" MODIFIED="1766412483238" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali" />
+    <SUITE FILE_PATH="coverage/A_S__2025_26_$fleet_manager.coverage" NAME="fleet_manager Coverage Results" MODIFIED="1766487360522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Informatica/Python/Ereditarietà spaziali" />
     <SUITE FILE_PATH="coverage/A_S__2025_26_$ripasso.coverage" NAME="ripasso Coverage Results" MODIFIED="1766335495697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Informatica/Python" />
   </component>
   <component name="github-copilot-workspace">

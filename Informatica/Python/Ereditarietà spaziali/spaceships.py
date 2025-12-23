@@ -50,6 +50,15 @@ class ExplorationProbe(Spaceship):
     def scan(self):
         print(f"{self.name} sta scansionando l'area circostante per raccogliere dati scientifici.")
 
+class SupplyDrone(Spaceship):
+    def __init__(self, name, value, hack_time):
+        super().__init__(name)
+        self.value = value
+        self.hack_time = hack_time
+
+    def fly(self, distance):
+        super().fly(distance)
+
 if __name__ == "__main__":
     print("--- 1. TEST NAVE CARGO ---")
     # Deve accettare nome e carico massimo
