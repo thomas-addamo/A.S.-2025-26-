@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Routing Express</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        .box { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        button { cursor: pointer; background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Express Routing Lab</h1>
+
+    <div class="box">
+        <h3>1. Rotta Semplice</h3>
+        <button onclick="chiamaApi('/api/info')">Verifica Info</button>
+    </div>
+    <pre id="output">Clicca un bottone per vedere i risultati...</pre>
+
+    <script>
+        async function chiamaApi(percorso) {
+            const out = document.getElementById('output');
+            try {
+                const res = await fetch(percorso);
+                const data = await res.json();
+                out.innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                out.innerText = "Errore di connessione al server.";
+            }
+        }
+    </script>
+</body>
+</html>
+
