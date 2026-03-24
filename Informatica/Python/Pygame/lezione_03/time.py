@@ -53,6 +53,10 @@ start_time = time.time()
 # FUNZIONI — logica del timer                                          #
 # ------------------------------------------------------------------ #
 
+def clamp(value: int, min_val: int, max_val: int) -> int:
+    return max(min_val, min(value, max_val))
+
+
 def time_elapsed(start: float) -> float:
     """
     TODO — Restituisce i secondi trascorsi da start fino ad ora
@@ -64,7 +68,7 @@ def time_elapsed(start: float) -> float:
     Suggerimento: time.time() restituisce i secondi dall'epoca Unix.
     La differenza tra due chiamate dà il tempo trascorso.
     """
-    raise NotImplementedError
+    return time.time() - start
 
 
 def time_remaining(start: float, duration: int) -> float:
@@ -79,7 +83,7 @@ def time_remaining(start: float, duration: int) -> float:
     Suggerimento: usa time_elapsed() e poi sottrai da duration.
     Usa max() per impedire valori negativi.
     """
-    raise NotImplementedError
+    return max(0, duration - time_elapsed(start))
 
 
 def is_expired(start: float, duration: int) -> bool:
@@ -89,7 +93,7 @@ def is_expired(start: float, duration: int) -> bool:
     Suggerimento: puoi usare time_remaining() oppure
     confrontare direttamente time_elapsed() con duration.
     """
-    raise NotImplementedError
+    return time_remaining(start, duration) == 0
 
 
 def bar_fill_width(remaining: float, duration: int, bar_width: int) -> int:
@@ -107,7 +111,8 @@ def bar_fill_width(remaining: float, duration: int, bar_width: int) -> int:
     moltiplicalo per bar_width e converti a intero con int().
     Usa clamp() o max()/min() per i limiti.
     """
-    raise NotImplementedError
+    ratio = remaining / duration if duration > 0 else 0
+    return clamp(int(ratio * bar_width), 0, bar_width)
 
 # ------------------------------------------------------------------ #
 # FUNZIONI — disegno                                                   #
@@ -129,7 +134,15 @@ def draw_timer_bar(surface: pygame.Surface,
     Aggiungi border_radius=6 per angoli arrotondati.
     Disegna prima lo sfondo, poi il riempimento sopra.
     """
-    raise NotImplementedError
+    # Sfondo
+    pygame.draw.rect(surface, BAR_BG_COLOR,
+                     pygame.Rect(BAR_X, BAR_Y, BAR_W, BAR_H),
+                     border_radius=6)
+    # Riempimento
+    fill_w = bar_fill_width(remaining, duration, BAR_W)
+    pygame.draw.rect(surface, BAR_FG_COLOR,
+                     pygame.Rect(BAR_X, BAR_Y, fill_w, BAR_H),
+                     border_radius=6)
 
 
 def draw_timer_text(surface: pygame.Surface,
@@ -149,7 +162,12 @@ def draw_timer_text(surface: pygame.Surface,
         rect = surf.get_rect(centerx=SCREEN_W // 2, top=y)
         surface.blit(surf, rect)
     """
-    raise NotImplementedError
+    if expired:
+        text = "Tempo scaduto!"
+        font = font_large
+    else:
+        text = str(int(remaining))
+        font = font_medium
 
 
 def draw_ball(surface: pygame.Surface,
@@ -162,7 +180,8 @@ def draw_ball(surface: pygame.Surface,
 
     Usa pygame.draw.circle().
     """
-    raise NotImplementedError
+    color = BALL_EXPIRED if expired else BALL_COLOR
+    pygame.draw.circle(surface, color, (x, y), BALL_RADIUS)
 
 # ------------------------------------------------------------------ #
 # LOOP PRINCIPALE                                                      #
