@@ -159,37 +159,8 @@
     <!-- GET tutti -->
     <div class="card">
         <h2><span class="badge get">GET</span> Tutti i videogiochi <span class="endpoint-url">/api/items</span></h2>
-        <div class="row">
-            <div>
-                <label>Filtra per nome (?name=)</label>
-                <input type="text" id="filter-name" placeholder="es. zelda">
-            </div>
-            <div>
-                <label>Filtra per genere (?genre=)</label>
-                <input type="text" id="filter-genre" placeholder="es. RPG">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label>Ordina per</label>
-                <select id="sort-field">
-                    <option value="">-- nessuno --</option>
-                    <option value="name">Nome</option>
-                    <option value="year">Anno</option>
-                    <option value="rating">Rating</option>
-                </select>
-            </div>
-            <div>
-                <label>Direzione</label>
-                <select id="sort-order">
-                    <option value="asc">Crescente (asc)</option>
-                    <option value="desc">Decrescente (desc)</option>
-                </select>
-            </div>
-        </div>
         <button onclick="getAll()">Esegui GET</button>
         <div id="lista-giochi" style="margin-top:16px"></div>
-        <div class="response-box" id="res-getall"></div>
     </div>
 
     <!-- GET per ID -->
@@ -279,24 +250,11 @@
     }
 
     async function getAll() {
-        const name   = document.getElementById("filter-name").value.trim();
-        const genre  = document.getElementById("filter-genre").value.trim();
-        const sort   = document.getElementById("sort-field").value;
-        const order  = document.getElementById("sort-order").value;
-
-        let url = BASE;
-        const params = new URLSearchParams();
-        if (name)  params.append("name", name);
-        if (genre) params.append("genre", genre);
-        if (sort)  { params.append("sort", sort); params.append("order", order); }
-        if ([...params].length) url += "?" + params.toString();
-
         try {
-            const res  = await fetch(url);
+            const res  = await fetch(BASE);
             const data = await res.json();
-            showResponse("res-getall", data, res.ok);
             renderList(Array.isArray(data) ? data : []);
-        } catch (e) { showResponse("res-getall", { error: "Server non raggiungibile" }, false); }
+        } catch (e) { renderList([]); }
     }
 
     function renderList(items) {
