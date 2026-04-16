@@ -1,0 +1,12 @@
+{
+  "name": "rest-api-starter",
+  "version": "1.0.0",
+  "description": "API REST per videogiochi",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
