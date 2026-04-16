@@ -5,6 +5,7 @@ const itemsRoutes = require("./routes/items");
 
 // Middleware
 app.use(express.json());
+app.use(express.static("public"));
 
 // Rotte
 app.use("/api/items", itemsRoutes);
